@@ -1,11 +1,11 @@
 import { generateJwt } from './jwt/generateJwt';
-import jwt from 'jsonwebtoken';
 import { GraphQLError } from 'graphql';
 import { Context } from '../../context/context';
 import {
   UserCreateInterface,
   UserLoginInterface,
 } from './interfaces/UserInterface';
+import { RatePostInterface } from './interfaces/PostJointInterfaces/RatePostInterface';
 
 class userController {
   async me(_parant: any, _args: any, context: Context) {
@@ -55,14 +55,12 @@ class userController {
     const result = await prisma.user.create({
       data: {
         email: data.email,
-        firsName: data.firsName,
+        firstName: data.firstName,
         lastName: data.lastName,
         role: 'USER',
         password: data.password,
       },
     });
-
-    console.log(result);
 
     const token = generateJwt(result);
     return { token };
@@ -71,6 +69,25 @@ class userController {
   getAllUsers = async (_parent: any, _args: any, context: Context) => {
     const { prisma } = context;
     return await prisma.user.findMany();
+  };
+
+  ratePost = async (
+    _parent: any,
+    args: { data: RatePostInterface },
+    context: Context
+  ) => {
+    const { prisma, user } = context;
+    const { data } = args;
+
+    const assignPost = await prisma.usersJoinLikedPosts.create({
+      data: {
+        postId: data.postId,
+        userId: user!.id,
+      },
+    });
+
+    console.log(assignPost);
+    return false;
   };
 }
 

@@ -8,27 +8,38 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid())
-  firsName   String
-  lastName   String
-  email      String    @unique
-  role       Role      @default(USER)
-  password   String
-  createDate DateTime  @default(now())
-  lastOnline DateTime?
-
-  writtenPosts Post[] @relation("Written posts")
+  id           String                @id @default(uuid())
+  firstName    String                @default("")
+  lastName     String
+  email        String                @unique
+  role         Role                  @default(USER)
+  password     String
+  createDate   DateTime              @default(now())
+  lastOnline   DateTime?
+  writtenPosts Post[]                @relation("Written posts")
+  likedPosts   UsersJoinLikedPosts[]
 
   @@index([email])
 }
 
 model Post {
-  id          String   @id @default(uuid())
-  title       String
-  article     String
-  createdDate DateTime @default(now())
-  author      User     @relation("Written posts", fields: [authorId], references: [id])
-  authorId    String
+  id         String                @id @default(uuid())
+  title      String
+  article    String
+  createDate DateTime              @default(now())
+  author     User                  @relation("Written posts", fields: [authorId], references: [id])
+  authorId   String
+  likedBy    UsersJoinLikedPosts[]
+}
+
+model UsersJoinLikedPosts {
+  postId     String
+  userId     String
+  post       Post     @relation(fields: [postId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([postId, userId])
 }
 
 enum Role {

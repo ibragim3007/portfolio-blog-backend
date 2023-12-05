@@ -17,5 +17,8 @@ export const permissions = shield({
   Query: {
     getAllUsers: isAdmin,
   },
-  Mutation: {},
+  Mutation: {
+    addPost: isAdmin,
+    ratePost: isAuthenticated,
+  },
 });
