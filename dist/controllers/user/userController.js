@@ -53,22 +53,44 @@ var userController = /** @class */ (function () {
             });
         }); };
         this.ratePost = function (_parent, args, context) { return __awaiter(_this, void 0, void 0, function () {
-            var prisma, user, data, assignPost;
+            var prisma, user, data, existingConnection;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         prisma = context.prisma, user = context.user;
                         data = args.data;
-                        return [4 /*yield*/, prisma.usersJoinLikedPosts.create({
-                                data: {
-                                    postId: data.postId,
-                                    userId: user.id,
+                        return [4 /*yield*/, prisma.usersJoinLikedPosts.findUnique({
+                                where: {
+                                    postId_userId: {
+                                        postId: data.postId,
+                                        userId: user.id,
+                                    },
                                 },
                             })];
                     case 1:
-                        assignPost = _a.sent();
-                        console.log(assignPost);
-                        return [2 /*return*/, false];
+                        existingConnection = _a.sent();
+                        if (!existingConnection) return [3 /*break*/, 3];
+                        return [4 /*yield*/, prisma.usersJoinLikedPosts.delete({
+                                where: {
+                                    postId_userId: {
+                                        postId: data.postId,
+                                        userId: user.id,
+                                    },
+                                },
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, prisma.usersJoinLikedPosts.create({
+                            data: {
+                                postId: data.postId,
+                                userId: user.id,
+                            },
+                        })];
+                    case 4:
+                        _a.sent();
+                        _a.label = 5;
+                    case 5: return [2 /*return*/, true];
                 }
             });
         }); };
