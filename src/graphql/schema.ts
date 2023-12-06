@@ -6,7 +6,7 @@ export const typeDefs = gql`
     getAllUsers: [User]!
     getAllPosts: [Post]!
     getUserById(id: String!): User
-    getPostById(id: String!): Post
+    getPostById(data: GetByIdInput!): Post!
   }
 
   type Mutation {
@@ -69,6 +69,10 @@ export const typeDefs = gql`
 
   input RatePostInput {
     postId: String!
+  }
+
+  input GetByIdInput {
+    id: String!
   }
 
   scalar DateTime

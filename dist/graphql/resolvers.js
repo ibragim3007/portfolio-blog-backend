@@ -17,6 +17,9 @@ exports.resolvers = {
         getAllPosts: function (_parant, _args, context) {
             return postController_1.default.getAllPosts(_parant, _args, context);
         },
+        getPostById: function (_parant, _args, context) {
+            return postController_1.default.getPostById(_parant, _args, context);
+        },
     },
     Mutation: {
         addUser: function (_parant, args, context) {

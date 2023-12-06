@@ -2,6 +2,27 @@ import { Context } from '../../context/context';
 import { PostAddInterface } from './interfaces/PostInterface';
 
 class postController {
+  getPostById = async (
+    _parant: any,
+    args: { data: { id: string } },
+    context: Context
+  ) => {
+    const { data } = args;
+    const { prisma } = context;
+
+    const post = await prisma.post.findUnique({
+      where: {
+        id: data.id,
+      },
+      include: {
+        author: true,
+        likedBy: true,
+      },
+    });
+
+    return post;
+  };
+
   getAllPosts = async (_parant: any, _args: any, context: Context) => {
     const { prisma } = context;
     const posts = await prisma.post.findMany({

@@ -39,6 +39,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var postController = /** @class */ (function () {
     function postController() {
         var _this = this;
+        this.getPostById = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
+            var data, prisma, post;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        data = args.data;
+                        prisma = context.prisma;
+                        return [4 /*yield*/, prisma.post.findUnique({
+                                where: {
+                                    id: data.id,
+                                },
+                                include: {
+                                    author: true,
+                                    likedBy: true,
+                                },
+                            })];
+                    case 1:
+                        post = _a.sent();
+                        return [2 /*return*/, post];
+                }
+            });
+        }); };
         this.getAllPosts = function (_parant, _args, context) { return __awaiter(_this, void 0, void 0, function () {
             var prisma, posts;
             return __generator(this, function (_a) {
