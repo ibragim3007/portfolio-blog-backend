@@ -77,17 +77,37 @@ class userController {
     context: Context
   ) => {
     const { prisma, user } = context;
+
     const { data } = args;
 
-    const assignPost = await prisma.usersJoinLikedPosts.create({
-      data: {
-        postId: data.postId,
-        userId: user!.id,
+    const existingConnection = await prisma.usersJoinLikedPosts.findUnique({
+      where: {
+        postId_userId: {
+          postId: data.postId,
+          userId: user!.id,
+        },
       },
     });
 
-    console.log(assignPost);
-    return false;
+    if (existingConnection) {
+      await prisma.usersJoinLikedPosts.delete({
+        where: {
+          postId_userId: {
+            postId: data.postId,
+            userId: user!.id,
+          },
+        },
+      });
+    } else {
+      await prisma.usersJoinLikedPosts.create({
+        data: {
+          postId: data.postId,
+          userId: user!.id,
+        },
+      });
+    }
+
+    return true;
   };
 }
 
