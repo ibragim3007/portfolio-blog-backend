@@ -49,13 +49,20 @@ var isAdmin = (0, graphql_shield_1.rule)({ cache: 'contextual' })(function (pare
         return [2 /*return*/, ((_a = ctx.user) === null || _a === void 0 ? void 0 : _a.role) === 'ADMIN'];
     });
 }); });
+var all = (0, graphql_shield_1.rule)({ cache: 'contextual' })(function (parent, args, ctx, info) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        return [2 /*return*/, true];
+    });
+}); });
 exports.permissions = (0, graphql_shield_1.shield)({
     Query: {
         getAllUsers: isAdmin,
+        getUserById: isAuthenticated,
     },
     Mutation: {
         addPost: isAdmin,
         ratePost: isAuthenticated,
+        login: all,
     },
 });
 //# sourceMappingURL=shileds.js.map

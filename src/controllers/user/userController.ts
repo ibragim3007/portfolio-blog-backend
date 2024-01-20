@@ -71,6 +71,20 @@ class userController {
     return await prisma.user.findMany();
   };
 
+  getUserById = async (
+    _parent: any,
+    args: { id: string },
+    context: Context
+  ) => {
+    const { prisma } = context;
+    console.log('OL');
+    return await prisma.user.findUnique({
+      where: {
+        id: args.id,
+      },
+    });
+  };
+
   ratePost = async (
     _parent: any,
     args: { data: RatePostInterface },

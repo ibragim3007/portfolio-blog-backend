@@ -13,12 +13,20 @@ const isAdmin = rule({ cache: 'contextual' })(
   }
 );
 
+const all = rule({ cache: 'contextual' })(
+  async (parent, args, ctx: Context, info) => {
+    return true;
+  }
+);
+
 export const permissions = shield({
   Query: {
     getAllUsers: isAdmin,
+    getUserById: isAuthenticated,
   },
   Mutation: {
     addPost: isAdmin,
     ratePost: isAuthenticated,
+    login: all,
   },
 });

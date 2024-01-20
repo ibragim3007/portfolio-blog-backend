@@ -11,6 +11,9 @@ exports.resolvers = {
         getAllUsers: function (_parant, _args, context) {
             return userController_1.default.getAllUsers(_parant, _args, context);
         },
+        getUserById: function (_parant, _args, context) {
+            return userController_1.default.getUserById(_parant, _args, context);
+        },
         me: function (_parant, _args, context) {
             return userController_1.default.me(_parant, _args, context);
         },

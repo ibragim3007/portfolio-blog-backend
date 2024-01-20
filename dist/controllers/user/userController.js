@@ -52,6 +52,22 @@ var userController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getUserById = function (_parent, args, context) { return __awaiter(_this, void 0, void 0, function () {
+            var prisma;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        prisma = context.prisma;
+                        console.log('OL');
+                        return [4 /*yield*/, prisma.user.findUnique({
+                                where: {
+                                    id: args.id,
+                                },
+                            })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        }); };
         this.ratePost = function (_parent, args, context) { return __awaiter(_this, void 0, void 0, function () {
             var prisma, user, data, existingConnection;
             return __generator(this, function (_a) {
