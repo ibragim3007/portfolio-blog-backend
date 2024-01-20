@@ -86,6 +86,7 @@ class userController {
         writtenPosts: {
           include: {
             likedBy: true,
+            author: true,
           },
         },
       },
