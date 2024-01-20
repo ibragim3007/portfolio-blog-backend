@@ -63,6 +63,9 @@ var userController = /** @class */ (function () {
                                 where: {
                                     id: args.id,
                                 },
+                                include: {
+                                    writtenPosts: true,
+                                },
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

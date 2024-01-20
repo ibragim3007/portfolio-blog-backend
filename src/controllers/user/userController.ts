@@ -82,6 +82,9 @@ class userController {
       where: {
         id: args.id,
       },
+      include: {
+        writtenPosts: true,
+      },
     });
   };
 
