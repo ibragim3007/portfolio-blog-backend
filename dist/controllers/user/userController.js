@@ -58,13 +58,16 @@ var userController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         prisma = context.prisma;
-                        console.log('OL');
                         return [4 /*yield*/, prisma.user.findUnique({
                                 where: {
                                     id: args.id,
                                 },
                                 include: {
-                                    writtenPosts: true,
+                                    writtenPosts: {
+                                        include: {
+                                            likedBy: true,
+                                        },
+                                    },
                                 },
                             })];
                     case 1: return [2 /*return*/, _a.sent()];

@@ -77,13 +77,17 @@ class userController {
     context: Context
   ) => {
     const { prisma } = context;
-    console.log('OL');
+
     return await prisma.user.findUnique({
       where: {
         id: args.id,
       },
       include: {
-        writtenPosts: true,
+        writtenPosts: {
+          include: {
+            likedBy: true,
+          },
+        },
       },
     });
   };
