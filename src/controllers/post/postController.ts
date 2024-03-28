@@ -1,4 +1,7 @@
-import { Context } from '../../context/context';
+import { Context } from '../../shared/context/context';
+import { Security } from '../../shared/security/security.service';
+import { ApiError } from '../../shared/service/error.service';
+
 import {
   PostAddInterface,
   PostDeleteInterface,
@@ -81,6 +84,10 @@ class postController {
     const { prisma } = context;
     const { data } = args;
 
+    if (!(await Security.isPostOwner(_parant, { id: data.id }, context))) {
+      throw ApiError.BadPermission();
+    }
+
     const deletedPost = prisma.post.delete({
       where: {
         id: data.id,
@@ -97,6 +104,10 @@ class postController {
   ) => {
     const { prisma } = context;
     const { data } = args;
+
+    if (!(await Security.isPostOwner(_parant, { id: data.id }, context))) {
+      throw ApiError.BadPermission();
+    }
 
     const editedPost = prisma.post.update({
       where: {

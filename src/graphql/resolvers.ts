@@ -1,6 +1,6 @@
 import postController from '../controllers/post/postController';
 import userController from '../controllers/user/userController';
-import { Context } from './../context/context';
+import { Context } from '../shared/context/context';
 
 export const resolvers = {
   Query: {

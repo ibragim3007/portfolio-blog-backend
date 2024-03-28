@@ -1,6 +1,6 @@
 import { generateJwt } from './jwt/generateJwt';
 import { GraphQLError } from 'graphql';
-import { Context } from '../../context/context';
+import { Context } from '../../shared/context/context';
 import {
   UserCreateInterface,
   UserLoginInterface,
