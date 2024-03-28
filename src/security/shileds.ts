@@ -14,7 +14,7 @@ const isAdmin = rule({ cache: 'contextual' })(
 );
 
 const all = rule({ cache: 'contextual' })(
-  async (parent, args, ctx: Context, info) => {
+  async (_parent, _args, ctx: Context, info) => {
     return true;
   }
 );
@@ -27,6 +27,8 @@ export const permissions = shield({
   Mutation: {
     addPost: isAdmin,
     ratePost: isAuthenticated,
+    deletePost: isAuthenticated,
+    editPost: isAuthenticated,
     login: all,
   },
 });

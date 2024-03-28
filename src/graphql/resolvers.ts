@@ -24,5 +24,9 @@ export const resolvers = {
       postController.addPost(_parant, _args, context),
     ratePost: (_parant: any, _args: any, context: Context) =>
       userController.ratePost(_parant, _args, context),
+    deletePost: (_parant: any, _args: any, context: Context) =>
+      postController.deletePost(_parant, _args, context),
+    editPost: (_parant: any, _args: any, context: Context) =>
+      postController.editPost(_parant, _args, context),
   },
 };

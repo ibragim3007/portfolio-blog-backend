@@ -1,5 +1,9 @@
 import { Context } from '../../context/context';
-import { PostAddInterface } from './interfaces/PostInterface';
+import {
+  PostAddInterface,
+  PostDeleteInterface,
+  PostEditInterface,
+} from './interfaces/PostInterface';
 
 class postController {
   getPostById = async (
@@ -23,8 +27,14 @@ class postController {
     return post;
   };
 
-  getAllPosts = async (_parant: any, _args: any, context: Context) => {
+  getAllPosts = async (
+    _parant: any,
+    args: { data?: { skip: number; take: number } },
+    context: Context
+  ) => {
     const { prisma } = context;
+    const { data } = args;
+
     const posts = await prisma.post.findMany({
       include: {
         author: true,
@@ -61,6 +71,44 @@ class postController {
     });
 
     return newPost;
+  };
+
+  deletePost = async (
+    _parant: any,
+    args: { data: PostDeleteInterface },
+    context: Context
+  ) => {
+    const { prisma } = context;
+    const { data } = args;
+
+    const deletedPost = prisma.post.delete({
+      where: {
+        id: data.id,
+      },
+    });
+
+    return deletedPost;
+  };
+
+  editPost = async (
+    _parant: any,
+    args: { data: PostEditInterface },
+    context: Context
+  ) => {
+    const { prisma } = context;
+    const { data } = args;
+
+    const editedPost = prisma.post.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        title: data.title,
+        article: data.article,
+      },
+    });
+
+    return editedPost;
   };
 }
 

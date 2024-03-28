@@ -13,6 +13,8 @@ export const typeDefs = gql`
     addUser(data: AddUserInput!): LoginRes!
     login(data: LoginInput!): LoginRes!
     addPost(data: AddPostInput!): Post!
+    deletePost(data: DeletePostInput!): Post!
+    editPost(data: EditPostInput!): Post!
     ratePost(data: RatePostInput!): Boolean!
   }
 
@@ -63,6 +65,16 @@ export const typeDefs = gql`
   }
 
   input AddPostInput {
+    title: String!
+    article: String!
+  }
+
+  input DeletePostInput {
+    id: String!
+  }
+
+  input EditPostInput {
+    id: String!
     title: String!
     article: String!
   }
