@@ -22,6 +22,12 @@ class postController {
         id: data.id,
       },
       include: {
+        comments: {
+          include: {
+            user: true,
+            likedBy: true,
+          },
+        },
         author: true,
         likedBy: true,
       },
@@ -48,10 +54,6 @@ class postController {
           },
         },
       },
-    });
-
-    posts.map((post, index) => {
-      console.log(post.likedBy);
     });
 
     return posts;

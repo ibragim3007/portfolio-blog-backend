@@ -46,6 +46,15 @@ class commentController {
       },
     });
 
+    await prisma.post.update({
+      where: {
+        id: data.postId,
+      },
+      data: {
+        commentsAmount: { increment: 1 },
+      },
+    });
+
     return comment;
   };
 
@@ -77,11 +86,29 @@ class commentController {
           },
         },
       });
+
+      await prisma.comment.update({
+        where: {
+          id: data.commentId,
+        },
+        data: {
+          likesAmount: { increment: -1 },
+        },
+      });
     } else {
       await prisma.usersJoinLikedComments.create({
         data: {
           userId: user.id,
           commentId: data.commentId,
+        },
+      });
+
+      await prisma.comment.update({
+        where: {
+          id: data.commentId,
+        },
+        data: {
+          likesAmount: { increment: 1 },
         },
       });
     }

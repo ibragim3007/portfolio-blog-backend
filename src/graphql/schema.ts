@@ -17,8 +17,8 @@ export const typeDefs = gql`
     addComment(data: AddCommentInput!): Comment!
     deletePost(data: DeletePostInput!): Post!
     editPost(data: EditPostInput!): Post!
-    ratePost(data: RatePostInput!): Boolean!
-    rateComment(data: AddCommentInput): Comment!
+    ratePost(data: RatePostInput!): Post!
+    rateComment(data: RateCommentInput!): Comment!
   }
 
   type LoginRes {
@@ -61,6 +61,7 @@ export const typeDefs = gql`
     postId: String!
     likesAmount: Int!
     likedBy: [LikesOnComments]
+    createDate: DateTime!
   }
 
   type PostOnUserLikes {

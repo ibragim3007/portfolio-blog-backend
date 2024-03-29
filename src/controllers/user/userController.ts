@@ -120,12 +120,22 @@ class userController {
           },
         },
       });
+
+      await prisma.post.update({
+        where: { id: data.postId },
+        data: { likesAmount: { decrement: 1 } },
+      });
     } else {
       await prisma.usersJoinLikedPosts.create({
         data: {
           postId: data.postId,
           userId: user!.id,
         },
+      });
+
+      await prisma.post.update({
+        where: { id: data.postId },
+        data: { likesAmount: { increment: 1 } },
       });
     }
 
