@@ -96,20 +96,25 @@ var postController = /** @class */ (function () {
         this.addPost = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
             var prisma, user, data, newPost;
             return __generator(this, function (_a) {
-                prisma = context.prisma, user = context.user;
-                data = args.data;
-                newPost = prisma.post.create({
-                    data: {
-                        article: data.article,
-                        title: data.title,
-                        authorId: user.id,
-                    },
-                });
-                return [2 /*return*/, newPost];
+                switch (_a.label) {
+                    case 0:
+                        prisma = context.prisma, user = context.user;
+                        data = args.data;
+                        return [4 /*yield*/, prisma.post.create({
+                                data: {
+                                    article: data.article,
+                                    title: data.title,
+                                    authorId: user.id,
+                                },
+                            })];
+                    case 1:
+                        newPost = _a.sent();
+                        return [2 /*return*/, newPost];
+                }
             });
         }); };
         this.deletePost = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
-            var prisma, data, deletedPost;
+            var prisma, data, deletedPost, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -119,12 +124,22 @@ var postController = /** @class */ (function () {
                     case 1:
                         if (!(_a.sent()))
                             return [2 /*return*/, error_service_1.ApiError.BadPermission()];
-                        deletedPost = prisma.post.delete({
-                            where: {
-                                id: data.id,
-                            },
-                        });
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, prisma.post.delete({
+                                where: {
+                                    id: data.id,
+                                },
+                            })];
+                    case 3:
+                        deletedPost = _a.sent();
                         return [2 /*return*/, deletedPost];
+                    case 4:
+                        e_1 = _a.sent();
+                        console.log(e_1);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };
@@ -139,15 +154,17 @@ var postController = /** @class */ (function () {
                     case 1:
                         if (!(_a.sent()))
                             return [2 /*return*/, error_service_1.ApiError.BadPermission()];
-                        editedPost = prisma.post.update({
-                            where: {
-                                id: data.id,
-                            },
-                            data: {
-                                title: data.title,
-                                article: data.article,
-                            },
-                        });
+                        return [4 /*yield*/, prisma.post.update({
+                                where: {
+                                    id: data.id,
+                                },
+                                data: {
+                                    title: data.title,
+                                    article: data.article,
+                                },
+                            })];
+                    case 2:
+                        editedPost = _a.sent();
                         return [2 /*return*/, editedPost];
                 }
             });

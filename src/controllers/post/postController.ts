@@ -67,7 +67,7 @@ class postController {
     const { prisma, user } = context;
     const { data } = args;
 
-    const newPost = prisma.post.create({
+    const newPost = await prisma.post.create({
       data: {
         article: data.article,
         title: data.title,
@@ -89,13 +89,17 @@ class postController {
     if (!(await Security.isPostOwner(_parant, { id: data.id }, context)))
       return ApiError.BadPermission();
 
-    const deletedPost = prisma.post.delete({
-      where: {
-        id: data.id,
-      },
-    });
+    try {
+      const deletedPost = await prisma.post.delete({
+        where: {
+          id: data.id,
+        },
+      });
 
-    return deletedPost;
+      return deletedPost;
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   editPost = async (
@@ -109,7 +113,7 @@ class postController {
     if (!(await Security.isPostOwner(_parant, { id: data.id }, context)))
       return ApiError.BadPermission();
 
-    const editedPost = prisma.post.update({
+    const editedPost = await prisma.post.update({
       where: {
         id: data.id,
       },
