@@ -25,15 +25,16 @@ model User {
 }
 
 model Post {
-  id          String                @id @default(uuid())
-  title       String
-  article     String
-  createDate  DateTime              @default(now())
-  author      User                  @relation("Written posts", fields: [authorId], references: [id])
-  authorId    String
-  likesAmount Int                   @default(0)
-  likedBy     UsersJoinLikedPosts[]
-  comments    Comment[]
+  id             String                @id @default(uuid())
+  title          String
+  article        String
+  createDate     DateTime              @default(now())
+  author         User                  @relation("Written posts", fields: [authorId], references: [id])
+  authorId       String
+  likesAmount    Int                   @default(0)
+  likedBy        UsersJoinLikedPosts[]
+  commentsAmount Int                   @default(0)
+  comments       Comment[]
 }
 
 model UsersJoinLikedPosts {

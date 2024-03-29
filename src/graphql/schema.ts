@@ -46,6 +46,7 @@ export const typeDefs = gql`
     likedBy: [PostOnUserLikes]
     likesAmount: Int!
     comments: [Comment]
+    commentsAmount: Int!
   }
 
   type Comment {
