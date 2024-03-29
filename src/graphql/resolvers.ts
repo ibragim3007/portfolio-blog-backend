@@ -1,3 +1,4 @@
+import commentController from '../controllers/comment/toPost/commentController';
 import postController from '../controllers/post/postController';
 import userController from '../controllers/user/userController';
 import { Context } from '../shared/context/context';
@@ -14,6 +15,8 @@ export const resolvers = {
       postController.getAllPosts(_parant, _args, context),
     getPostById: (_parant: any, _args: any, context: Context) =>
       postController.getPostById(_parant, _args, context),
+    getCommentById: (_parant: any, _args: any, context: Context) =>
+      commentController.getCommentById(_parant, _args, context),
   },
   Mutation: {
     addUser: (_parant: any, args: any, context: Context) =>
@@ -28,5 +31,9 @@ export const resolvers = {
       postController.deletePost(_parant, _args, context),
     editPost: (_parant: any, _args: any, context: Context) =>
       postController.editPost(_parant, _args, context),
+    addComment: (_parant: any, _args: any, context: Context) =>
+      commentController.addComment(_parant, _args, context),
+    rateComment: (_parant: any, _args: any, context: Context) =>
+      commentController.rateComment(_parant, _args, context),
   },
 };

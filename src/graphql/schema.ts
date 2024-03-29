@@ -7,15 +7,18 @@ export const typeDefs = gql`
     getAllPosts: [Post]!
     getUserById(id: String!): User
     getPostById(data: GetByIdInput!): Post!
+    getCommentById(data: GetByIdInput!): Comment!
   }
 
   type Mutation {
     addUser(data: AddUserInput!): LoginRes!
     login(data: LoginInput!): LoginRes!
     addPost(data: AddPostInput!): Post!
+    addComment(data: AddCommentInput!): Comment!
     deletePost(data: DeletePostInput!): Post!
     editPost(data: EditPostInput!): Post!
     ratePost(data: RatePostInput!): Boolean!
+    rateComment(data: AddCommentInput): Comment!
   }
 
   type LoginRes {
@@ -109,6 +112,15 @@ export const typeDefs = gql`
 
   input GetByIdInput {
     id: String!
+  }
+
+  input AddCommentInput {
+    text: String!
+    postId: String!
+  }
+
+  input RateCommentInput {
+    commentId: String!
   }
 
   scalar DateTime
