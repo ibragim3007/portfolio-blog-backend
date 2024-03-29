@@ -76,7 +76,7 @@ var userController = /** @class */ (function () {
             });
         }); };
         this.ratePost = function (_parent, args, context) { return __awaiter(_this, void 0, void 0, function () {
-            var prisma, user, data, existingConnection;
+            var prisma, user, data, existingConnection, post;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -92,7 +92,7 @@ var userController = /** @class */ (function () {
                             })];
                     case 1:
                         existingConnection = _a.sent();
-                        if (!existingConnection) return [3 /*break*/, 3];
+                        if (!existingConnection) return [3 /*break*/, 4];
                         return [4 /*yield*/, prisma.usersJoinLikedPosts.delete({
                                 where: {
                                     postId_userId: {
@@ -103,17 +103,36 @@ var userController = /** @class */ (function () {
                             })];
                     case 2:
                         _a.sent();
-                        return [3 /*break*/, 5];
-                    case 3: return [4 /*yield*/, prisma.usersJoinLikedPosts.create({
+                        return [4 /*yield*/, prisma.post.update({
+                                where: { id: data.postId },
+                                data: { likesAmount: { decrement: 1 } },
+                            })];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 7];
+                    case 4: return [4 /*yield*/, prisma.usersJoinLikedPosts.create({
                             data: {
                                 postId: data.postId,
                                 userId: user.id,
                             },
                         })];
-                    case 4:
+                    case 5:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [2 /*return*/, true];
+                        return [4 /*yield*/, prisma.post.update({
+                                where: { id: data.postId },
+                                data: { likesAmount: { increment: 1 } },
+                            })];
+                    case 6:
+                        _a.sent();
+                        _a.label = 7;
+                    case 7: return [4 /*yield*/, prisma.post.findUnique({
+                            where: {
+                                id: data.postId,
+                            },
+                        })];
+                    case 8:
+                        post = _a.sent();
+                        return [2 /*return*/, post];
                 }
             });
         }); };

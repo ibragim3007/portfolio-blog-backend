@@ -35,56 +35,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.startServer = void 0;
-var config_1 = require("./shared/config");
-var context_1 = __importDefault(require("./shared/context/context"));
-var resolvers_1 = require("./graphql/resolvers");
-var schema_1 = require("./graphql/schema");
-var apollo_server_core_1 = require("apollo-server-core");
-var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var cors_1 = __importDefault(require("cors"));
-var express_1 = __importDefault(require("express"));
-var body_parser_1 = __importDefault(require("body-parser"));
-var schema_2 = require("@graphql-tools/schema");
-var graphql_middleware_1 = require("graphql-middleware");
-var shileds_1 = require("./shared/security/shileds");
-var apollo_server_express_1 = require("apollo-server-express");
-var ErrorHandler_1 = require("./shared/middlewares/ErrorHandler");
-var app = (0, express_1.default)();
-app.use((0, cookie_parser_1.default)());
-app.use((0, cors_1.default)());
-app.use(body_parser_1.default.json({ limit: '10mb' }));
-app.use(body_parser_1.default.urlencoded({ limit: '10mb', extended: true }));
-app.use(ErrorHandler_1.clientErrorHandler);
-var schema = (0, schema_2.makeExecutableSchema)({ typeDefs: schema_1.typeDefs, resolvers: resolvers_1.resolvers });
-var schemaWithMiddleware = (0, graphql_middleware_1.applyMiddleware)(schema, shileds_1.permissions);
-var apollo = new apollo_server_express_1.ApolloServer({
-    schema: schemaWithMiddleware,
-    introspection: process.env.ENV_NAME !== 'production',
-    context: context_1.default,
-    plugins: process.env.ENV_NAME !== 'production'
-        ? [(0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)()]
-        : [],
-});
-var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, apollo.start()];
-            case 1:
-                _a.sent();
-                apollo.applyMiddleware({
-                    app: app,
-                });
-                app.listen({ port: config_1.PORT }, function () {
-                    return console.log("Listen port ".concat(process.env.PORT || 8080, "..."));
-                });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.startServer = startServer;
-//# sourceMappingURL=server.js.map
+exports.Security = void 0;
+var Security = /** @class */ (function () {
+    function Security() {
+    }
+    Security.isPostOwner = function (_parant, args, context) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, prisma, post;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        user = context.user, prisma = context.prisma;
+                        if (!args.id || !user)
+                            throw new Error('Error...');
+                        return [4 /*yield*/, prisma.post.findUnique({
+                                where: {
+                                    id: args.id,
+                                },
+                                select: {
+                                    authorId: true,
+                                },
+                            })];
+                    case 1:
+                        post = _a.sent();
+                        if (!post)
+                            throw new Error('No post...');
+                        return [2 /*return*/, post.authorId === user.id]; // Проверить, является ли текущий пользователь владельцем поста
+                }
+            });
+        });
+    };
+    return Security;
+}());
+exports.Security = Security;
+//# sourceMappingURL=security.service.js.map

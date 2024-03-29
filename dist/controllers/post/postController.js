@@ -36,6 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var security_service_1 = require("../../shared/security/security.service");
+var error_service_1 = require("../../shared/service/error.service");
 var postController = /** @class */ (function () {
     function postController() {
         var _this = this;
@@ -51,6 +53,12 @@ var postController = /** @class */ (function () {
                                     id: data.id,
                                 },
                                 include: {
+                                    comments: {
+                                        include: {
+                                            user: true,
+                                            likedBy: true,
+                                        },
+                                    },
                                     author: true,
                                     likedBy: true,
                                 },
@@ -61,12 +69,13 @@ var postController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAllPosts = function (_parant, _args, context) { return __awaiter(_this, void 0, void 0, function () {
-            var prisma, posts;
+        this.getAllPosts = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
+            var prisma, data, posts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         prisma = context.prisma;
+                        data = args.data;
                         return [4 /*yield*/, prisma.post.findMany({
                                 include: {
                                     author: true,
@@ -80,9 +89,6 @@ var postController = /** @class */ (function () {
                             })];
                     case 1:
                         posts = _a.sent();
-                        posts.map(function (post, index) {
-                            console.log(post.likedBy);
-                        });
                         return [2 /*return*/, posts];
                 }
             });
@@ -100,6 +106,50 @@ var postController = /** @class */ (function () {
                     },
                 });
                 return [2 /*return*/, newPost];
+            });
+        }); };
+        this.deletePost = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
+            var prisma, data, deletedPost;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        prisma = context.prisma;
+                        data = args.data;
+                        return [4 /*yield*/, security_service_1.Security.isPostOwner(_parant, { id: data.id }, context)];
+                    case 1:
+                        if (!(_a.sent()))
+                            return [2 /*return*/, error_service_1.ApiError.BadPermission()];
+                        deletedPost = prisma.post.delete({
+                            where: {
+                                id: data.id,
+                            },
+                        });
+                        return [2 /*return*/, deletedPost];
+                }
+            });
+        }); };
+        this.editPost = function (_parant, args, context) { return __awaiter(_this, void 0, void 0, function () {
+            var prisma, data, editedPost;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        prisma = context.prisma;
+                        data = args.data;
+                        return [4 /*yield*/, security_service_1.Security.isPostOwner(_parant, { id: data.id }, context)];
+                    case 1:
+                        if (!(_a.sent()))
+                            return [2 /*return*/, error_service_1.ApiError.BadPermission()];
+                        editedPost = prisma.post.update({
+                            where: {
+                                id: data.id,
+                            },
+                            data: {
+                                title: data.title,
+                                article: data.article,
+                            },
+                        });
+                        return [2 /*return*/, editedPost];
+                }
             });
         }); };
     }
