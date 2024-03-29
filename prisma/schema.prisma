@@ -8,28 +8,32 @@ datasource db {
 }
 
 model User {
-  id           String                @id @default(uuid())
-  firstName    String                @default("")
-  lastName     String
-  email        String                @unique
-  role         Role                  @default(USER)
-  password     String
-  createDate   DateTime              @default(now())
-  lastOnline   DateTime?
-  writtenPosts Post[]                @relation("Written posts")
-  likedPosts   UsersJoinLikedPosts[]
+  id            String                   @id @default(uuid())
+  firstName     String                   @default("")
+  lastName      String
+  email         String                   @unique
+  role          Role                     @default(USER)
+  password      String
+  createDate    DateTime                 @default(now())
+  lastOnline    DateTime?
+  writtenPosts  Post[]                   @relation("Written posts")
+  comments      Comment[]
+  likedPosts    UsersJoinLikedPosts[]
+  likedComments UsersJoinLikedComments[]
 
   @@index([email])
 }
 
 model Post {
-  id         String                @id @default(uuid())
-  title      String
-  article    String
-  createDate DateTime              @default(now())
-  author     User                  @relation("Written posts", fields: [authorId], references: [id])
-  authorId   String
-  likedBy    UsersJoinLikedPosts[]
+  id          String                @id @default(uuid())
+  title       String
+  article     String
+  createDate  DateTime              @default(now())
+  author      User                  @relation("Written posts", fields: [authorId], references: [id])
+  authorId    String
+  likesAmount Int                   @default(0)
+  likedBy     UsersJoinLikedPosts[]
+  comments    Comment[]
 }
 
 model UsersJoinLikedPosts {
@@ -40,6 +44,27 @@ model UsersJoinLikedPosts {
   assignedAt DateTime @default(now())
 
   @@id([postId, userId])
+}
+
+model Comment {
+  id          String                   @id @default(uuid())
+  text        String
+  user        User                     @relation(fields: [userId], references: [id])
+  userId      String
+  postId      String
+  likesAmount Int                      @default(0)
+  post        Post                     @relation(fields: [postId], references: [id])
+  likedBy     UsersJoinLikedComments[]
+}
+
+model UsersJoinLikedComments {
+  commentId  String
+  userId     String
+  comment    Comment  @relation(fields: [commentId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([commentId, userId])
 }
 
 enum Role {

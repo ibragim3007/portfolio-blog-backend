@@ -129,7 +129,13 @@ class userController {
       });
     }
 
-    return true;
+    const post = await prisma.post.findUnique({
+      where: {
+        id: data.postId,
+      },
+    });
+
+    return post;
   };
 }
 

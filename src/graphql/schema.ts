@@ -32,6 +32,8 @@ export const typeDefs = gql`
     lastOnline: DateTime
     writtenPosts: [Post]
     likedPosts: [PostOnUserLikes]
+    comments: [Comment]
+    likedComments: [LikesOnComments]
   }
 
   type Post {
@@ -42,13 +44,34 @@ export const typeDefs = gql`
     author: User
     authorId: String
     likedBy: [PostOnUserLikes]
+    likesAmount: Int!
+    comments: [Comment]
+  }
+
+  type Comment {
+    id: String!
+    text: String!
+    user: User
+    userId: String!
+    post: Post
+    postId: String!
+    likesAmount: Int!
+    likedBy: [LikesOnComments]
   }
 
   type PostOnUserLikes {
     userId: String!
     postId: String!
-    post: Post!
-    user: User!
+    post: Post
+    user: User
+    assignedAt: DateTime!
+  }
+
+  type LikesOnComments {
+    commentId: String!
+    userId: String!
+    comment: Comment
+    user: User
     assignedAt: DateTime!
   }
 

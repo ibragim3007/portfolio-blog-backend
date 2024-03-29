@@ -84,9 +84,8 @@ class postController {
     const { prisma } = context;
     const { data } = args;
 
-    if (!(await Security.isPostOwner(_parant, { id: data.id }, context))) {
-      throw ApiError.BadPermission();
-    }
+    if (!(await Security.isPostOwner(_parant, { id: data.id }, context)))
+      return ApiError.BadPermission();
 
     const deletedPost = prisma.post.delete({
       where: {
@@ -105,9 +104,8 @@ class postController {
     const { prisma } = context;
     const { data } = args;
 
-    if (!(await Security.isPostOwner(_parant, { id: data.id }, context))) {
-      throw ApiError.BadPermission();
-    }
+    if (!(await Security.isPostOwner(_parant, { id: data.id }, context)))
+      return ApiError.BadPermission();
 
     const editedPost = prisma.post.update({
       where: {
