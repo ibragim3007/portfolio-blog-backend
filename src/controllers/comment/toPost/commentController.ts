@@ -38,6 +38,9 @@ class commentController {
 
     if (!user) return ApiError.UnauthorizedError();
 
+    if (data.text.trim() === '')
+      return ApiError.BadRequest("Field can't be empty");
+
     const comment = await prisma.comment.create({
       data: {
         userId: user?.id,

@@ -72,6 +72,8 @@ var commentController = /** @class */ (function () {
                         prisma = context.prisma, user = context.user;
                         if (!user)
                             return [2 /*return*/, error_service_1.ApiError.UnauthorizedError()];
+                        if (data.text.trim() === '')
+                            return [2 /*return*/, error_service_1.ApiError.BadRequest("Field can't be empty")];
                         return [4 /*yield*/, prisma.comment.create({
                                 data: {
                                     userId: user === null || user === void 0 ? void 0 : user.id,
