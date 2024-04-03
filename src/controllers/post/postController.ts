@@ -6,6 +6,7 @@ import {
   PostAddInterface,
   PostDeleteInterface,
   PostEditInterface,
+  PostWatchHistoryInterface,
 } from './interfaces/PostInterface';
 
 class postController {
@@ -124,6 +125,36 @@ class postController {
     });
 
     return editedPost;
+  };
+
+  addBrowserHistory = async (
+    _parant: any,
+    args: { data: PostWatchHistoryInterface },
+    context: Context
+  ) => {
+    const { data } = args;
+    const { prisma, user } = context;
+
+    if (!user) return ApiError.BadRequest('No authorization');
+
+    const isExistWatch = await prisma.usersJoinBrowserHistory.findUnique({
+      where: {
+        userId_postId: {
+          postId: data.postId,
+          userId: user.id,
+        },
+      },
+    });
+
+    if (isExistWatch) return isExistWatch;
+    const res = await prisma.usersJoinBrowserHistory.create({
+      data: {
+        userId: user.id,
+        postId: data.postId,
+      },
+    });
+
+    return res;
   };
 }
 

@@ -35,6 +35,8 @@ export const resolvers = {
       commentController.addComment(_parant, _args, context),
     rateComment: (_parant: any, _args: any, context: Context) =>
       commentController.rateComment(_parant, _args, context),
+    addBrowserHistory: (_parant: any, _args: any, context: Context) =>
+      postController.addBrowserHistory(_parant, _args, context),
   },
   Subscription: {
     getCommentByPostId: {

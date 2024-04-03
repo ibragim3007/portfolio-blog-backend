@@ -19,6 +19,7 @@ export const typeDefs = gql`
     editPost(data: EditPostInput!): Post!
     ratePost(data: RatePostInput!): Post!
     rateComment(data: RateCommentInput!): Comment!
+    addBrowserHistory(data: AddBrowserHistoryInput!): HistoryOnPost!
   }
 
   type Subscription {
@@ -41,6 +42,7 @@ export const typeDefs = gql`
     likedPosts: [PostOnUserLikes]
     comments: [Comment]
     likedComments: [LikesOnComments]
+    browserHistory: [HistoryOnPost]
   }
 
   type Post {
@@ -54,6 +56,7 @@ export const typeDefs = gql`
     likesAmount: Int!
     comments: [Comment]
     commentsAmount: Int!
+    browserHistory: [HistoryOnPost]
   }
 
   type Comment {
@@ -81,6 +84,14 @@ export const typeDefs = gql`
     userId: String!
     comment: Comment
     user: User
+    assignedAt: DateTime!
+  }
+
+  type HistoryOnPost {
+    userId: String!
+    postId: String!
+    user: User
+    post: Post
     assignedAt: DateTime!
   }
 
@@ -129,6 +140,10 @@ export const typeDefs = gql`
   }
 
   input GetCommentsByPostInput {
+    postId: String!
+  }
+
+  input AddBrowserHistoryInput {
     postId: String!
   }
 
