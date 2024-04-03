@@ -36,4 +36,10 @@ export const resolvers = {
     rateComment: (_parant: any, _args: any, context: Context) =>
       commentController.rateComment(_parant, _args, context),
   },
+  Subscription: {
+    getCommentByPostId: {
+      subscribe: (_parant: any, _args: any, context: Context) =>
+        commentController.getCommentByPostId(_parant, _args, context),
+    },
+  },
 };

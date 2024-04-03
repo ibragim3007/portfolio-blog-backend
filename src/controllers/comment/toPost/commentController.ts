@@ -28,6 +28,26 @@ class commentController {
     return comment;
   };
 
+  getCommentByPostId = async (
+    _parant: any,
+    args: { data: { postId: string } },
+    context: Context
+  ) => {
+    const { data } = args;
+    const { prisma, user } = context;
+
+    console.log(user);
+    const channel = Math.random().toString(36).slice(2, 15);
+
+    const comments = prisma.comment.findMany({
+      where: {
+        postId: args.data.postId,
+      },
+    });
+
+    return comments;
+  };
+
   addComment = async (
     _parant: any,
     args: { data: CommentAddInterface },

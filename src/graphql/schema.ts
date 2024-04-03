@@ -21,6 +21,10 @@ export const typeDefs = gql`
     rateComment(data: RateCommentInput!): Comment!
   }
 
+  type Subscription {
+    getCommentByPostId(data: GetCommentsByPostInput!): [Comment]
+  }
+
   type LoginRes {
     token: String!
   }
@@ -122,6 +126,10 @@ export const typeDefs = gql`
 
   input RateCommentInput {
     commentId: String!
+  }
+
+  input GetCommentsByPostInput {
+    postId: String!
   }
 
   scalar DateTime
